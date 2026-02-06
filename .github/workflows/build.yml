@@ -1,4 +1,4 @@
-name: Build APK
+name: nezha-apk
 on: [workflow_dispatch]
 jobs:
   build:
