@@ -12,10 +12,13 @@ jobs:
           distribution: 'temurin'
           java-version: '17'
 
-      - name: 构建APK
+      - name: Build
         run: |
           cd app
-          gradle assembleDebug --no-daemon
+          # 使用Gradle 7.5.1的Wrapper，避免系统版本问题
+          wget -q https://github.com/gradle/gradle/raw/7.5.1/gradlew
+          chmod +x gradlew
+          ./gradlew assembleDebug --stacktrace
 
       # ********** 这是新增的关键步骤 **********
       - name: 上传APK以供下载
