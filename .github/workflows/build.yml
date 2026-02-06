@@ -14,13 +14,17 @@ jobs:
 
       - name: 终极诊断与构建
         run: |
-          echo "=== 本次构建使用的命令 ==="
-          echo "命令: gradle assembleDebug --no-daemon --stacktrace --info"
-          echo "当前目录:"
-          pwd
-          echo "目录列表:"
-          ls -la
-          echo "=== 开始构建，输出完整日志 ==="
+          echo "=== 1. 进入 app 目录 ==="
           cd app
-          # 核心：使用 --stacktrace --info 参数，并输出全部日志
-          gradle assembleDebug --no-daemon --stacktrace --info
+          echo "=== 2. 执行构建，捕获所有输出 (包含早期初始化信息) ==="
+          # 关键：将 stderr 重定向到 stdout，并通过 tee 同时输出到屏幕和文件
+          {
+            gradle assembleDebug --no-daemon --stacktrace --info --warning-mode=all 2>&1
+          } | tee /tmp/full_build_output.log
+          echo "=== 3. 如果构建失败，输出日志文件的前300行和后300行 ==="
+          if [ $? -ne 0 ]; then
+            echo "---- 日志文件头部 (可能包含早期错误) ----"
+            head -n 300 /tmp/full_build_output.log
+            echo "---- 日志文件尾部 (可能包含堆栈顶部) ----"
+            tail -n 300 /tmp/full_build_output.log
+          fi
