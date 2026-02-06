@@ -10,9 +10,18 @@ jobs:
           distribution: 'temurin'
           java-version: '17'
       - name: Build
+      - name: 终极诊断与构建
         run: |
+          echo "=== 本次构建使用的命令 ==="
+          echo "命令: gradle assembleDebug --no-daemon --stacktrace --info"
+          echo "当前目录:"
+          pwd
+          echo "目录列表:"
+          ls -la
+          echo "=== 开始构建，输出完整日志 ==="
           cd app
-          gradle assembleDebug --no-daemon
+          # 核心：使用 --stacktrace --info 参数，并输出全部日志
+          gradle assembleDebug --no-daemon --stacktrace --info
       - uses: actions/upload-artifact@v4
         with:
           name: nezha-apk
