@@ -1,0 +1,38 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:orientation="vertical"
+    android:padding="20dp">
+    <EditText
+        android:id="@+id/et_server"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:hint="服务器地址 (如: http://your-server.com)"
+        android:inputType="textUri"/>
+    <EditText
+        android:id="@+id/et_agent_id"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:hint="Agent ID"
+        android:layout_marginTop="10dp"/>
+    <EditText
+        android:id="@+id/et_secret"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:hint="Secret Key"
+        android:inputType="textPassword"
+        android:layout_marginTop="10dp"/>
+    <Button
+        android:id="@+id/btn_start"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:text="启动监控"
+        android:layout_marginTop="20dp"/>
+    <Button
+        android:id="@+id/btn_stop"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:text="停止监控"
+        android:layout_marginTop="10dp"/>
+</LinearLayout>
