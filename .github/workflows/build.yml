@@ -13,22 +13,18 @@ jobs:
           distribution: 'temurin'
           java-version: '17'
 
-      # 使用Gradle官方Action（它会自动处理wrapper和缓存）
       - name: Setup Gradle
         uses: gradle/actions/setup-gradle@v3
-        # 这里不再需要单独指定gradle-version，会使用项目wrapper.properties中的版本（7.5.1）
-        with:
-          cache-read-only: false # 允许写入缓存
+        # 此Action会增强缓存体验，并自动使用项目根目录的wrapper
 
       - name: Build with Gradle
         run: |
-          cd app
-          # 关键修改：使用 ./gradlew 而不是 gradle
-          ./gradlew clean assembleDebug --stacktrace --no-daemon
+          # 关键：在项目根目录下，构建指定的 app 模块
+          ./gradlew :app:clean :app:assembleDebug --stacktrace --no-daemon
 
       - name: Upload APK
+        if: success()
         uses: actions/upload-artifact@v4
-        if: success() # 仅在构建成功时上传
         with:
           name: nezha-apk
           path: app/build/outputs/apk/debug/*.apk
