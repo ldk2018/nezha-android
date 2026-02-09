@@ -6,25 +6,29 @@ jobs:
     runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@v4
-      - uses: actions/setup-java@v4
+
+      - name: Setup Java
+        uses: actions/setup-java@v4
         with:
           distribution: 'temurin'
           java-version: '17'
 
-      # 核心改动：使用Gradle官方Action，并明确指定一个兼容的版本
+      # 使用Gradle官方Action（它会自动处理wrapper和缓存）
       - name: Setup Gradle
         uses: gradle/actions/setup-gradle@v3
+        # 这里不再需要单独指定gradle-version，会使用项目wrapper.properties中的版本（7.5.1）
         with:
-          gradle-version: '7.5.1' # 指定一个与插件版本7.4.2兼容的Gradle版本
+          cache-read-only: false # 允许写入缓存
 
-      - name: Build with Gradle 7.5.1
+      - name: Build with Gradle
         run: |
           cd app
-          # 先清理，再构建
-          gradle clean assembleDebug --stacktrace --no-daemon
+          # 关键修改：使用 ./gradlew 而不是 gradle
+          ./gradlew clean assembleDebug --stacktrace --no-daemon
 
       - name: Upload APK
         uses: actions/upload-artifact@v4
+        if: success() # 仅在构建成功时上传
         with:
           name: nezha-apk
           path: app/build/outputs/apk/debug/*.apk
