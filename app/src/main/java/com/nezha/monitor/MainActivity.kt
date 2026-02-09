@@ -1,13 +1,12 @@
 package com.nezha.monitor
 
+import android.os.Bundle
+import androidx.appcompat.app.AppCompatActivity
+import android.widget.Button
+import android.widget.EditText
+import android.widget.Toast
 import android.content.Intent
-android.os.Build
-android.os.Bundle
-android.widget.Button
-android.widget.EditText
-android.widget.Toast
-androidx.appcompat.app.AppCompatActivity
-androidx.core.content.ContextCompat
+import androidx.core.content.ContextCompat
 
 class MainActivity : AppCompatActivity() {
     private lateinit var etServer: EditText
